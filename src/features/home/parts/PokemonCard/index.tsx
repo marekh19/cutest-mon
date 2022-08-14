@@ -1,9 +1,14 @@
-import type { FC } from 'react'
+import type { FC, ReactNode } from 'react'
 
 import { Wrapper } from './styled'
 
-export const PokemonCard: FC = () => (
+type Props = {
+  children: NonNullable<ReactNode>
+}
+
+export const PokemonCard: FC<Props> = ({ children }) => (
   <Wrapper>
     <p>Pokemon</p>
+    {children}
   </Wrapper>
 )
