@@ -3,12 +3,11 @@ import type { FC, ReactNode } from 'react'
 import { Wrapper } from './styled'
 
 type Props = {
-  children: NonNullable<ReactNode>
+  id: number
 }
 
-export const PokemonCard: FC<Props> = ({ children }) => (
+export const PokemonCard: FC<Props> = ({ id }) => (
   <Wrapper>
-    <p>Pokemon</p>
-    {children}
+    <p>Pokemon {id}</p>
   </Wrapper>
 )

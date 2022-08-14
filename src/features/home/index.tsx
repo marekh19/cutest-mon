@@ -13,12 +13,12 @@ export const Homepage: FC = () => {
       <H1>Which Pokémon is Rounder?</H1>
       <DuelWrapper>
         <div>
-          <PokemonCard>{first}</PokemonCard>
+          <PokemonCard key={first} id={first} />
           <button>Roundest</button>
         </div>
         <p>vs.</p>
         <div>
-          <PokemonCard>{second}</PokemonCard>
+          <PokemonCard key={second} id={second} />
           <button>Roundest</button>
         </div>
       </DuelWrapper>
