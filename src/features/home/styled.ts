@@ -18,8 +18,6 @@ export const DuelWrapper = styled.div`
   width: 96%;
   max-width: 80rem;
   margin: 0 2rem;
-  border: 1px solid ${colors.text.base};
-  border-radius: 1rem;
   padding: 1.2rem;
 `
 
@@ -32,8 +30,25 @@ export const PokemonWrapper = styled.article`
   height: 100%;
 
   & > p {
-    font-size: 2rem;
+    ${typography.paragraph.large}
     text-transform: capitalize;
+  }
+`
+
+export const VoteButton = styled.button`
+  ${typography.paragraph.large}
+  background: transparent;
+  cursor: pointer;
+  border: 1px solid ${colors.accent.blue};
+  border-radius: 1rem;
+  padding: 1rem 2rem;
+  color: ${colors.accent.blue};
+  text-transform: capitalize;
+  transition: all 0.2s;
+
+  &:hover {
+    background: ${colors.accent.blue};
+    color: ${colors.text.inverted};
   }
 `
 
