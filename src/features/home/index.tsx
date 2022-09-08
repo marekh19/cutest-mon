@@ -3,8 +3,10 @@ import { useState } from 'react'
 import Image from 'next/image'
 
 import { Layout, H1, DuelWrapper, PokemonWrapper, VoteButton } from './styled'
+
 import { trpc } from '~/utils/trpc'
 import { getOptionsForVote } from '~/utils/getRandomPokemon'
+import { inferQueryResponse } from '~/pages/api/trpc/[trpc]'
 
 export const Homepage: FC = () => {
   const [ids, updateIds] = useState(() => getOptionsForVote())
@@ -23,28 +25,40 @@ export const Homepage: FC = () => {
     <Layout>
       <H1>Which Pokémon is Cutest?</H1>
       <DuelWrapper>
-        <PokemonWrapper>
-          <Image
-            src={firstPokemon.data?.sprites.front_default || ''}
-            width="140%"
-            height="140%"
-          />
-          <VoteButton onClick={() => voteForCutest(first)}>
-            {firstPokemon.data?.name}
-          </VoteButton>
-        </PokemonWrapper>
-        <p>vs.</p>
-        <PokemonWrapper>
-          <Image
-            src={secondPokemon.data?.sprites.front_default || ''}
-            width="140%"
-            height="140%"
-          />
-          <VoteButton onClick={() => voteForCutest(second)}>
-            {secondPokemon.data?.name}
-          </VoteButton>
-        </PokemonWrapper>
+        {!firstPokemon.isLoading &&
+          firstPokemon.data &&
+          !secondPokemon.isLoading &&
+          secondPokemon.data && (
+            <>
+              <PokemonListing
+                pokemon={firstPokemon.data}
+                vote={() => voteForCutest(first)}
+              />
+              <p>vs.</p>
+              <PokemonListing
+                pokemon={secondPokemon.data}
+                vote={() => voteForCutest(second)}
+              />
+            </>
+          )}
       </DuelWrapper>
     </Layout>
+  )
+}
+
+type PokemonFromServer = inferQueryResponse<'get-pokemon-by-id'>
+
+const PokemonListing: FC<{ pokemon: PokemonFromServer; vote: () => void }> = (
+  props
+) => {
+  return (
+    <PokemonWrapper>
+      <Image
+        src={props.pokemon.sprites.front_default || ''}
+        width="150%"
+        height="150%"
+      />
+      <VoteButton onClick={() => props.vote()}>{props.pokemon.name}</VoteButton>
+    </PokemonWrapper>
   )
 }
