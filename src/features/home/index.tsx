@@ -15,10 +15,16 @@ export const Homepage: FC = () => {
   const firstPokemon = trpc.useQuery(['get-pokemon-by-id', { id: first }])
   const secondPokemon = trpc.useQuery(['get-pokemon-by-id', { id: second }])
 
+  const voteMutation = trpc.useMutation(['cast-vote'])
+
   if (firstPokemon.isLoading || secondPokemon.isLoading) return null
 
-  const voteForCutest = (id: number) => {
-    // TODO: fire mutation to persist changes
+  const voteForCutest = (selected: number) => {
+    if (selected === first) {
+      voteMutation.mutate({ votedFor: first, votedAgainst: second })
+    } else {
+      voteMutation.mutate({ votedFor: second, votedAgainst: first })
+    }
   }
 
   return (
