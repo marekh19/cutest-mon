@@ -1,26 +1,41 @@
 import type { FC } from 'react'
+import { useState } from 'react'
+import Image from 'next/image'
 
-import { Layout, H1, DuelWrapper } from './styled'
-import { PokemonCard } from './parts/PokemonCard'
+import { Layout, H1, DuelWrapper, PokemonWrapper } from './styled'
 import { trpc } from '~/utils/trpc'
 import { getOptionsForVote } from '~/utils/getRandomPokemon'
 
 export const Homepage: FC = () => {
-  const [first, second] = getOptionsForVote()
+  const [ids, updateIds] = useState(() => getOptionsForVote())
+  const [first, second] = ids
+
+  const firstPokemon = trpc.useQuery(['get-pokemon-by-id', { id: first }])
+  const secondPokemon = trpc.useQuery(['get-pokemon-by-id', { id: second }])
+
+  if (firstPokemon.isLoading || secondPokemon.isLoading) return null
 
   return (
     <Layout>
-      <H1>Which Pokémon is Rounder?</H1>
+      <H1>Which Pokémon is Cuter?</H1>
       <DuelWrapper>
-        <div>
-          <PokemonCard key={first} id={first} />
-          <button>Roundest</button>
-        </div>
+        <PokemonWrapper>
+          <Image
+            src={firstPokemon.data?.sprites.front_default}
+            width="140%"
+            height="140%"
+          />
+          <p>{firstPokemon.data?.name}</p>
+        </PokemonWrapper>
         <p>vs.</p>
-        <div>
-          <PokemonCard key={second} id={second} />
-          <button>Roundest</button>
-        </div>
+        <PokemonWrapper>
+          <Image
+            src={secondPokemon.data?.sprites.front_default}
+            width="140%"
+            height="140%"
+          />
+          <p>{secondPokemon.data?.name}</p>
+        </PokemonWrapper>
       </DuelWrapper>
     </Layout>
   )
