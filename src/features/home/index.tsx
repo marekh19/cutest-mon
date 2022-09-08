@@ -25,6 +25,7 @@ export const Homepage: FC = () => {
     } else {
       voteMutation.mutate({ votedFor: second, votedAgainst: first })
     }
+    updateIds(getOptionsForVote())
   }
 
   return (
