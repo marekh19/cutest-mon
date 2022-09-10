@@ -1,12 +1,12 @@
 import type { FC } from 'react'
 import { useState } from 'react'
-import Image from 'next/image'
 
-import { Layout, H1, DuelWrapper, PokemonWrapper, VoteButton } from './styled'
+import { Layout, H1, DuelWrapper, Footer } from './styled'
+import { GithubIcon } from './parts/GithubIcon'
+import { PokemonListing } from './parts/PokemonListing'
 
 import { trpc } from '~/utils/trpc'
 import { getOptionsForVote } from '~/utils/getRandomPokemon'
-import { inferQueryResponse } from '~/pages/api/trpc/[trpc]'
 
 export const Homepage: FC = () => {
   const [ids, updateIds] = useState(() => getOptionsForVote())
@@ -29,43 +29,36 @@ export const Homepage: FC = () => {
   }
 
   return (
-    <Layout>
-      <H1>Which Pokémon is Cutest?</H1>
-      <DuelWrapper>
-        {!firstPokemon.isLoading &&
-          firstPokemon.data &&
-          !secondPokemon.isLoading &&
-          secondPokemon.data && (
-            <>
-              <PokemonListing
-                pokemon={firstPokemon.data}
-                vote={() => voteForCutest(first)}
-              />
-              <p>vs.</p>
-              <PokemonListing
-                pokemon={secondPokemon.data}
-                vote={() => voteForCutest(second)}
-              />
-            </>
-          )}
-      </DuelWrapper>
-    </Layout>
-  )
-}
-
-type PokemonFromServer = inferQueryResponse<'get-pokemon-by-id'>
-
-const PokemonListing: FC<{ pokemon: PokemonFromServer; vote: () => void }> = (
-  props
-) => {
-  return (
-    <PokemonWrapper>
-      <Image
-        src={props.pokemon.sprites.front_default || ''}
-        width="150%"
-        height="150%"
-      />
-      <VoteButton onClick={() => props.vote()}>{props.pokemon.name}</VoteButton>
-    </PokemonWrapper>
+    <>
+      <Layout>
+        <H1>Which Pokémon is Cutest?</H1>
+        <DuelWrapper>
+          {!firstPokemon.isLoading &&
+            firstPokemon.data &&
+            !secondPokemon.isLoading &&
+            secondPokemon.data && (
+              <>
+                <PokemonListing
+                  pokemon={firstPokemon.data}
+                  vote={() => voteForCutest(first)}
+                />
+                <p>vs.</p>
+                <PokemonListing
+                  pokemon={secondPokemon.data}
+                  vote={() => voteForCutest(second)}
+                />
+              </>
+            )}
+        </DuelWrapper>
+      </Layout>
+      <Footer>
+        <a
+          href="https://github.com/marekh19/cutest-mon"
+          target="_blank"
+        >
+          <GithubIcon />
+        </a>
+      </Footer>
+    </>
   )
 }

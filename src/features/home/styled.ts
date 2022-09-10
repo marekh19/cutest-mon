@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { colors } from '../ui/theme/colors'
 
 import { typography } from '../ui/theme/typography'
 
@@ -21,38 +20,16 @@ export const DuelWrapper = styled.div`
   padding: 1.2rem;
 `
 
-export const PokemonWrapper = styled.article`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-
-  & > p {
-    ${typography.paragraph.large}
-    text-transform: capitalize;
-  }
-`
-
-export const VoteButton = styled.button`
-  ${typography.paragraph.large}
-  background: transparent;
-  cursor: pointer;
-  border: 1px solid ${colors.accent.blue};
-  border-radius: 1rem;
-  padding: 1rem 2rem;
-  color: ${colors.accent.blue};
-  text-transform: capitalize;
-  transition: all 0.2s;
-
-  &:hover {
-    background: ${colors.accent.blue};
-    color: ${colors.text.inverted};
-  }
-`
-
 export const H1 = styled.h1`
   ${typography.heading.h2}
   margin-bottom: 3rem;
+`
+
+export const Footer = styled.footer`
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2.5rem;
+  height: 2.5rem;
 `
