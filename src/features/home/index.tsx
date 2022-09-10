@@ -55,6 +55,7 @@ export const Homepage: FC = () => {
         <a
           href="https://github.com/marekh19/cutest-mon"
           target="_blank"
+          rel="noreferrer"
         >
           <GithubIcon />
         </a>
