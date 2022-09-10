@@ -14,7 +14,7 @@ export const PokemonListing: FC<{
   return (
     <PokemonWrapper>
       <Image
-        src={props.pokemon.sprites.front_default || ''}
+        src={props.pokemon.spriteUrl}
         width="150%"
         height="150%"
       />
