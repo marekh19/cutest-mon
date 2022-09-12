@@ -1,6 +1,7 @@
 import type { FC } from 'react'
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 import { Layout, H1, DuelWrapper, Footer, ResultsButton } from './styled'
 import { GithubIcon } from './parts/GithubIcon'
@@ -30,28 +31,43 @@ export const Homepage: FC = () => {
     updateIds(getOptionsForVote())
   }
 
+  const loadedData =
+    !firstPokemon.isLoading &&
+    firstPokemon.data &&
+    !secondPokemon.isLoading &&
+    secondPokemon.data
+
   return (
     <>
       <Layout>
         <H1>Which Pokémon is Cutest?</H1>
-        <DuelWrapper>
-          {!firstPokemon.isLoading &&
-            firstPokemon.data &&
-            !secondPokemon.isLoading &&
-            secondPokemon.data && (
-              <>
-                <PokemonListing
-                  pokemon={firstPokemon.data}
-                  vote={() => voteForCutest(first)}
-                />
-                <p>vs.</p>
-                <PokemonListing
-                  pokemon={secondPokemon.data}
-                  vote={() => voteForCutest(second)}
-                />
-              </>
-            )}
-        </DuelWrapper>
+        {loadedData && (
+          <DuelWrapper>
+            {!firstPokemon.isLoading &&
+              firstPokemon.data &&
+              !secondPokemon.isLoading &&
+              secondPokemon.data && (
+                <>
+                  <PokemonListing
+                    pokemon={firstPokemon.data}
+                    vote={() => voteForCutest(first)}
+                  />
+                  <p>vs.</p>
+                  <PokemonListing
+                    pokemon={secondPokemon.data}
+                    vote={() => voteForCutest(second)}
+                  />
+                </>
+              )}
+          </DuelWrapper>
+        )}
+        {!loadedData && (
+          <Image
+            src="/rings.svg"
+            width={128}
+            height={128}
+          />
+        )}
         <Link href={Routes.RESULTS}>
           <ResultsButton>Results</ResultsButton>
         </Link>
