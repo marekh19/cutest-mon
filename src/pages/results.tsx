@@ -6,8 +6,14 @@ import { FC } from 'react'
 import { prisma } from '~/backend/utils/prisma'
 import { AsyncReturnType } from '~/utils/ts-bs'
 
-import { Main } from '~/features/results/styled'
-import { ResultsRow } from '~/features/results/parts/PokemonListing/styled'
+import { Main, H1 } from '~/features/results/styled'
+import {
+  ResultsRow,
+  Pokemon,
+  Name,
+  Rating,
+  Rank,
+} from '~/features/results/parts/PokemonListing/styled'
 
 const getPokemonInOrder = async () => {
   return await prisma.pokemon.findMany({
@@ -36,18 +42,22 @@ const generateCutenessPercentage = (pokemon: PokemonQueryResult[number]) => {
   return (VoteFor / (VoteFor + VoteAgainst)) * 100
 }
 
-const PokemonListing: FC<{ pokemon: PokemonQueryResult[number] }> = ({
-  pokemon,
-}) => {
+const PokemonListing: FC<{
+  pokemon: PokemonQueryResult[number]
+  rank: number
+}> = ({ pokemon, rank }) => {
   return (
     <ResultsRow>
-      <Image
-        src={pokemon.spriteUrl}
-        width={64}
-        height={64}
-      />
-      <p>{pokemon.name}</p>
-      <p>{generateCutenessPercentage(pokemon) + ' %'}</p>
+      <Pokemon>
+        <Image
+          src={pokemon.spriteUrl}
+          width={64}
+          height={64}
+        />
+        <Name>{pokemon.name}</Name>
+      </Pokemon>
+      <Rating>{generateCutenessPercentage(pokemon).toFixed(2) + ' %'}</Rating>
+      <Rank>{rank + '.'}</Rank>
     </ResultsRow>
   )
 }
@@ -57,12 +67,13 @@ const ResultsPage: NextPage<{
 }> = ({ pokemon }) => {
   return (
     <Main>
-      <h1>Results</h1>
+      <H1>Results</H1>
       {pokemon.map((currentPokemon, index) => {
         return (
           <PokemonListing
             pokemon={currentPokemon}
             key={index}
+            rank={index + 1}
           />
         )
       })}
