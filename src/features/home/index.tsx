@@ -1,12 +1,14 @@
 import type { FC } from 'react'
 import { useState } from 'react'
+import Link from 'next/link'
 
-import { Layout, H1, DuelWrapper, Footer } from './styled'
+import { Layout, H1, DuelWrapper, Footer, ResultsButton } from './styled'
 import { GithubIcon } from './parts/GithubIcon'
 import { PokemonListing } from './parts/PokemonListing'
 
 import { trpc } from '~/utils/trpc'
 import { getOptionsForVote } from '~/utils/getRandomPokemon'
+import { Routes } from '~/utils/routes'
 
 export const Homepage: FC = () => {
   const [ids, updateIds] = useState(() => getOptionsForVote())
@@ -50,6 +52,9 @@ export const Homepage: FC = () => {
               </>
             )}
         </DuelWrapper>
+        <Link href={Routes.RESULTS}>
+          <ResultsButton>Results</ResultsButton>
+        </Link>
       </Layout>
       <Footer>
         <a
