@@ -16,7 +16,6 @@ type TDocument = React.ComponentType<NextDocumentTypes.DocumentProps> & {
 const withServerSideStyles = (document: TDocument) => {
   // Resolve getInitialProps either from the custom document, or from Next.js' default.
   const getInitialProps =
-    // eslint-disable-next-line @typescript-eslint/unbound-method
     document.getInitialProps ?? NextDocument.getInitialProps
 
   // Implement getInitialProps on behalf of document.
