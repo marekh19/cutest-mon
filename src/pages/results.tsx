@@ -1,6 +1,8 @@
 import type { NextPage } from 'next'
 import type { GetServerSideProps } from 'next'
 import Image from 'next/image'
+import Link from 'next/link'
+
 import { FC } from 'react'
 
 import { prisma } from '~/backend/utils/prisma'
@@ -13,7 +15,10 @@ import {
   Name,
   Rating,
   Rank,
+  Votes,
 } from '~/features/results/parts/PokemonListing/styled'
+import { Back } from '~/features/results/parts/Back'
+import { Routes } from '~/utils/routes'
 
 const getPokemonInOrder = async () => {
   return await prisma.pokemon.findMany({
@@ -53,10 +58,16 @@ const PokemonListing: FC<{
           src={pokemon.spriteUrl}
           width={64}
           height={64}
+          layout="fixed"
         />
         <Name>{pokemon.name}</Name>
       </Pokemon>
-      <Rating>{generateCutenessPercentage(pokemon).toFixed(2) + ' %'}</Rating>
+      <Rating>
+        {generateCutenessPercentage(pokemon).toFixed(2)}&nbsp;%{' '}
+        <Votes>
+          ({pokemon._count.VoteFor}&nbsp;|&nbsp;{pokemon._count.VoteAgainst})
+        </Votes>
+      </Rating>
       <Rank>{rank + '.'}</Rank>
     </ResultsRow>
   )
@@ -68,6 +79,11 @@ const ResultsPage: NextPage<{
   return (
     <Main>
       <H1>Results</H1>
+      <Link href={Routes.HOME}>
+        <a>
+          <Back />
+        </a>
+      </Link>
       {pokemon.map((currentPokemon, index) => {
         return (
           <PokemonListing

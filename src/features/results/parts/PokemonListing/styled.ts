@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { colors } from '~/features/ui/theme/colors'
 import { typography } from '~/features/ui/theme/typography'
 
 export const ResultsRow = styled.article`
@@ -18,6 +19,8 @@ export const Pokemon = styled.div`
 export const Name = styled.p`
   text-transform: capitalize;
   ${typography.paragraph.large}
+  font-weight: bold;
+  margin-right: 1rem;
 `
 
 export const Rating = styled.p`
@@ -32,5 +35,8 @@ export const Rank = styled.span`
   line-height: 1rem;
   border-radius: 1rem;
   ${typography.paragraph.large}
-  font-weight: bold;
+`
+export const Votes = styled.span`
+  ${typography.paragraph.small};
+  ${colors.text.dimmed};
 `

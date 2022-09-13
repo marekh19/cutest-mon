@@ -6,9 +6,13 @@ export const Main = styled.main`
   max-width: 80rem;
   margin: 0 auto;
   width: 96%;
+
+  & a {
+    position: absolute;
+  }
 `
 
 export const H1 = styled.h1`
   text-align: center;
-  margin-bottom: 1.6rem;
+  margin: 1.6rem 0;
 `

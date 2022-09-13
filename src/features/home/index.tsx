@@ -48,9 +48,6 @@ export const HomePage: FC = () => {
 
   return (
     <>
-      <Head>
-        <title>Cutest Pokemon</title>
-      </Head>
       <Layout>
         <H1>Which Pokémon is Cutest?</H1>
         {pokemonPair && (
@@ -66,7 +63,6 @@ export const HomePage: FC = () => {
               vote={() => voteForCutest(pokemonPair.secondPokemon.id)}
               disabled={fetchingNext}
             />
-            )
           </DuelWrapper>
         )}
         {!pokemonPair && (
