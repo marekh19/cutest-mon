@@ -1,9 +1,9 @@
 import type { NextPage } from 'next'
 
-import { Homepage } from '~/features/home'
+import { HomePage } from '~/features/home'
 
 const Home: NextPage = () => {
-  return <Homepage />
+  return <HomePage />
 }
 
 export default Home

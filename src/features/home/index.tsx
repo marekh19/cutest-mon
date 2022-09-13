@@ -1,67 +1,75 @@
 import type { FC } from 'react'
-import { useState } from 'react'
+
 import Link from 'next/link'
 import Image from 'next/image'
+import Head from 'next/head'
 
 import { Layout, H1, DuelWrapper, Footer, ResultsButton } from './styled'
 import { GithubIcon } from './parts/GithubIcon'
 import { PokemonListing } from './parts/PokemonListing'
 
 import { trpc } from '~/utils/trpc'
-import { getOptionsForVote } from '~/utils/getRandomPokemon'
 import { Routes } from '~/utils/routes'
 
-export const Homepage: FC = () => {
-  const [ids, updateIds] = useState(() => getOptionsForVote())
-  const [first, second] = ids
-
-  const firstPokemon = trpc.useQuery(['get-pokemon-by-id', { id: first }])
-  const secondPokemon = trpc.useQuery(['get-pokemon-by-id', { id: second }])
+export const HomePage: FC = () => {
+  const {
+    data: pokemonPair,
+    refetch,
+    isLoading,
+  } = trpc.useQuery(['get-pokemon-pair'], {
+    refetchInterval: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
 
   const voteMutation = trpc.useMutation(['cast-vote'])
 
-  if (firstPokemon.isLoading || secondPokemon.isLoading) return null
-
   const voteForCutest = (selected: number) => {
-    if (selected === first) {
-      voteMutation.mutate({ votedFor: first, votedAgainst: second })
+    if (!pokemonPair) return
+
+    if (selected === pokemonPair?.firstPokemon.id) {
+      // If voted for first pokemon, fire voteFor with first ID
+      voteMutation.mutate({
+        votedFor: pokemonPair.firstPokemon.id,
+        votedAgainst: pokemonPair.secondPokemon.id,
+      })
     } else {
-      voteMutation.mutate({ votedFor: second, votedAgainst: first })
+      // Else fire voteFor with second ID
+      voteMutation.mutate({
+        votedFor: pokemonPair.secondPokemon.id,
+        votedAgainst: pokemonPair.firstPokemon.id,
+      })
     }
-    updateIds(getOptionsForVote())
+
+    refetch()
   }
 
-  const loadedData =
-    !firstPokemon.isLoading &&
-    firstPokemon.data &&
-    !secondPokemon.isLoading &&
-    secondPokemon.data
+  const fetchingNext = voteMutation.isLoading || isLoading
 
   return (
     <>
+      <Head>
+        <title>Cutest Pokemon</title>
+      </Head>
       <Layout>
         <H1>Which Pokémon is Cutest?</H1>
-        {loadedData && (
+        {pokemonPair && (
           <DuelWrapper>
-            {!firstPokemon.isLoading &&
-              firstPokemon.data &&
-              !secondPokemon.isLoading &&
-              secondPokemon.data && (
-                <>
-                  <PokemonListing
-                    pokemon={firstPokemon.data}
-                    vote={() => voteForCutest(first)}
-                  />
-                  <p>vs.</p>
-                  <PokemonListing
-                    pokemon={secondPokemon.data}
-                    vote={() => voteForCutest(second)}
-                  />
-                </>
-              )}
+            <PokemonListing
+              pokemon={pokemonPair.firstPokemon}
+              vote={() => voteForCutest(pokemonPair.firstPokemon.id)}
+              disabled={fetchingNext}
+            />
+            <p>vs.</p>
+            <PokemonListing
+              pokemon={pokemonPair.secondPokemon}
+              vote={() => voteForCutest(pokemonPair.secondPokemon.id)}
+              disabled={fetchingNext}
+            />
+            )
           </DuelWrapper>
         )}
-        {!loadedData && (
+        {!pokemonPair && (
           <Image
             src="/rings.svg"
             width={128}

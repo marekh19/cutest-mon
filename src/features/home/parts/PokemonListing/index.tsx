@@ -5,11 +5,12 @@ import { inferQueryResponse } from '~/pages/api/trpc/[trpc]'
 
 import { PokemonWrapper, VoteButton } from './styled'
 
-type PokemonFromServer = inferQueryResponse<'get-pokemon-by-id'>
+type PokemonFromServer = inferQueryResponse<'get-pokemon-pair'>['firstPokemon']
 
 export const PokemonListing: FC<{
   pokemon: PokemonFromServer
   vote: () => void
+  disabled: boolean
 }> = (props) => {
   return (
     <PokemonWrapper>
@@ -18,7 +19,12 @@ export const PokemonListing: FC<{
         width="150%"
         height="150%"
       />
-      <VoteButton onClick={() => props.vote()}>{props.pokemon.name}</VoteButton>
+      <VoteButton
+        onClick={() => props.vote()}
+        disabled={props.disabled}
+      >
+        {props.pokemon.name}
+      </VoteButton>
     </PokemonWrapper>
   )
 }
