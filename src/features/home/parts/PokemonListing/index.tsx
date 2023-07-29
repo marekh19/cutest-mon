@@ -18,11 +18,9 @@ export const PokemonListing: FC<{
         src={props.pokemon.spriteUrl}
         width="150%"
         height="150%"
+        alt={props.pokemon.name}
       />
-      <VoteButton
-        onClick={() => props.vote()}
-        disabled={props.disabled}
-      >
+      <VoteButton onClick={() => props.vote()} disabled={props.disabled}>
         {props.pokemon.name}
       </VoteButton>
     </PokemonWrapper>

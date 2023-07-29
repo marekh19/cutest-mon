@@ -9,5 +9,5 @@ export default trpcNext.createNextApiHandler({
 })
 
 export type inferQueryResponse<
-  TRouteKey extends keyof AppRouter['_def']['queries']
+  TRouteKey extends keyof AppRouter['_def']['queries'],
 > = inferProcedureOutput<AppRouter['_def']['queries'][TRouteKey]>

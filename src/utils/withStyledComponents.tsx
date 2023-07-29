@@ -5,7 +5,7 @@ import { ServerStyleSheet } from 'styled-components'
 
 type TDocument = React.ComponentType<NextDocumentTypes.DocumentProps> & {
   getInitialProps?: (
-    ctx: NextDocumentTypes.DocumentContext
+    ctx: NextDocumentTypes.DocumentContext,
   ) => Promise<NextDocumentTypes.DocumentInitialProps>
 }
 

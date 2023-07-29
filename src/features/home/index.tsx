@@ -2,7 +2,6 @@ import type { FC } from 'react'
 
 import Link from 'next/link'
 import Image from 'next/image'
-import Head from 'next/head'
 
 import { Layout, H1, DuelWrapper, Footer, ResultsButton } from './styled'
 import { GithubIcon } from './parts/GithubIcon'
@@ -66,11 +65,7 @@ export const HomePage: FC = () => {
           </DuelWrapper>
         )}
         {!pokemonPair && (
-          <Image
-            src="/rings.svg"
-            width={128}
-            height={128}
-          />
+          <Image src="/rings.svg" width={128} height={128} alt="loading" />
         )}
         <Link href={Routes.RESULTS}>
           <ResultsButton>Results</ResultsButton>

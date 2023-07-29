@@ -1,7 +1,7 @@
 const MAX_POKEDEX_ID = 493
 
 export const getRandomPokemon: (notThisOne?: number) => number = (
-  notThisOne
+  notThisOne,
 ) => {
   const pokedexNumber = Math.floor(Math.random() * MAX_POKEDEX_ID) + 1
 

@@ -19,6 +19,7 @@ import {
 } from '~/features/results/parts/PokemonListing/styled'
 import { Back } from '~/features/results/parts/Back'
 import { Routes } from '~/utils/routes'
+import Head from 'next/head'
 
 const getPokemonInOrder = async () => {
   return await prisma.pokemon.findMany({
@@ -56,6 +57,7 @@ const PokemonListing: FC<{
       <Pokemon>
         <Image
           src={pokemon.spriteUrl}
+          alt={pokemon.name}
           width={64}
           height={64}
           layout="fixed"
@@ -77,23 +79,28 @@ const ResultsPage: NextPage<{
   pokemon: AsyncReturnType<typeof getPokemonInOrder>
 }> = ({ pokemon }) => {
   return (
-    <Main>
-      <H1>Results</H1>
-      <Link href={Routes.HOME}>
-        <a>
-          <Back />
-        </a>
-      </Link>
-      {pokemon.map((currentPokemon, index) => {
-        return (
-          <PokemonListing
-            pokemon={currentPokemon}
-            key={index}
-            rank={index + 1}
-          />
-        )
-      })}
-    </Main>
+    <>
+      <Head>
+        <title>Results | Cutest Pokémon</title>
+      </Head>
+      <Main>
+        <H1>Results</H1>
+        <Link href={Routes.HOME}>
+          <a>
+            <Back />
+          </a>
+        </Link>
+        {pokemon.map((currentPokemon, index) => {
+          return (
+            <PokemonListing
+              pokemon={currentPokemon}
+              key={index}
+              rank={index + 1}
+            />
+          )
+        })}
+      </Main>
+    </>
   )
 }
 
