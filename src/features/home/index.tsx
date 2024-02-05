@@ -65,7 +65,13 @@ export const HomePage: FC = () => {
           </DuelWrapper>
         )}
         {!pokemonPair && (
-          <Image src="/rings.svg" width={128} height={128} alt="loading" />
+          <Image
+            src="/rings.svg"
+            width={128}
+            height={128}
+            alt="loading"
+            unoptimized
+          />
         )}
         <Link href={Routes.RESULTS}>
           <ResultsButton>Results</ResultsButton>

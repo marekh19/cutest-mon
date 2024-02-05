@@ -19,6 +19,7 @@ export const PokemonListing: FC<{
         width="150%"
         height="150%"
         alt={props.pokemon.name}
+        unoptimized
       />
       <VoteButton onClick={() => props.vote()} disabled={props.disabled}>
         {props.pokemon.name}

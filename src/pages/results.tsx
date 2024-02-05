@@ -61,6 +61,7 @@ const PokemonListing: FC<{
           width={64}
           height={64}
           layout="fixed"
+          unoptimized
         />
         <Name>{pokemon.name}</Name>
       </Pokemon>
